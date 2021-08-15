@@ -1,6 +1,6 @@
 "use strict";
-const Module = (function () {
-  //private variables and functions
+const MazeModule = (function () {
+  //initializing private variables and functions
   let currentHeroX = 0,
     currentHeroY = 0;
   const canvas = document.getElementById("myCanvas");
@@ -18,7 +18,7 @@ const Module = (function () {
       setTimeout(() => {
         modalWindow.style.display = "none";
         currentHeroX = currentHeroY = 0;
-        Module.drawMaze();
+        MazeModule.drawMaze();
       }, 3000);
     }
   };
@@ -31,8 +31,8 @@ const Module = (function () {
 
   window.onkeypress = (e) => {
     const pressedKey = e.key;
-    const maze = Module.maze;
-    const mazeLength = Module.maze.length;
+    const maze = MazeModule.maze;
+    const mazeLength = MazeModule.maze.length;
     switch (pressedKey) {
       case "a": {
         if (currentHeroY === 0) {
@@ -83,7 +83,7 @@ const Module = (function () {
         break;
     }
     checkTheHeroForFinish(maze[currentHeroX][currentHeroY]);
-    Module.drawMaze();
+    MazeModule.drawMaze();
   };
 
   //public methods and variables
@@ -121,4 +121,4 @@ const Module = (function () {
   };
 })();
 
-Module.drawMaze();
+MazeModule.drawMaze();
