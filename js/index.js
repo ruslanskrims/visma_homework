@@ -1,8 +1,20 @@
 "use strict";
-const MazeModule = (function () {
+(function () {
   //initializing private variables and functions
   let currentHeroX = 0,
     currentHeroY = 0;
+  const maze = [
+    [1, 1, 1, 1, 1, 0, 1, 0, 1, 0],
+    [0, 0, 1, 0, 1, 0, 1, 0, 1, 0],
+    [1, 1, 1, 0, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 1, 0, 1, 0, 1, 0],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+    [1, 0, 1, 1, 1, 1, 1, 0, 1, 3],
+    [1, 1, 1, 0, 0, 0, 0, 0, 1, 0],
+    [1, 0, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 1, 0, 1, 0, 0, 0, 1, 0],
+  ];
   const canvas = document.getElementById("myCanvas");
   const mainContainer = document.getElementById("main");
   const context = canvas.getContext("2d");
@@ -18,21 +30,14 @@ const MazeModule = (function () {
       setTimeout(() => {
         modalWindow.style.display = "none";
         currentHeroX = currentHeroY = 0;
-        MazeModule.drawMaze();
+        drawMaze();
       }, 3000);
     }
   };
 
-  const drawRectangle = function (i, j, sqrSize, bTopx, bTopy) {
-    const xOffset = bTopx + j * sqrSize;
-    const yOffset = bTopy + i * sqrSize;
-    context.fillRect(xOffset, yOffset, sqrSize, sqrSize);
-  };
-
   window.onkeypress = (e) => {
     const pressedKey = e.key;
-    const maze = MazeModule.maze;
-    const mazeLength = MazeModule.maze.length;
+    const mazeLength = maze.length;
     switch (pressedKey) {
       case "a": {
         if (currentHeroY === 0) {
@@ -83,42 +88,33 @@ const MazeModule = (function () {
         break;
     }
     checkTheHeroForFinish(maze[currentHeroX][currentHeroY]);
-    MazeModule.drawMaze();
+    drawMaze();
   };
 
-  //public methods and variables
-  return {
-    maze: [
-      [1, 1, 1, 1, 1, 0, 1, 0, 1, 0],
-      [0, 0, 1, 0, 1, 0, 1, 0, 1, 0],
-      [1, 1, 1, 0, 1, 1, 1, 1, 1, 1],
-      [1, 0, 0, 0, 1, 0, 1, 0, 1, 0],
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-      [1, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-      [1, 0, 1, 1, 1, 1, 1, 0, 1, 3],
-      [1, 1, 1, 0, 0, 0, 0, 0, 1, 0],
-      [1, 0, 1, 1, 1, 1, 1, 1, 1, 1],
-      [1, 0, 1, 0, 1, 0, 0, 0, 1, 0],
-    ],
-    drawMaze: function () {
-      const squareSize = 50;
-      const boardTopX = 50;
-      const boardTopY = 50;
-      for (let i = 0; i < this.maze.length; i++) {
-        for (let j = 0; j < this.maze[i].length; j++) {
-          const mazeElement = this.maze[i][j];
-          context.fillStyle =
-            mazeElement === 1
-              ? `white`
-              : (context.fillStyle = mazeElement === 3 ? `red` : `black`);
-          if (i === currentHeroX && j === currentHeroY) {
-            context.fillStyle = "green";
-          }
-          drawRectangle(i, j, squareSize, boardTopX, boardTopY);
+  const drawRectangle = function (i, j, sqrSize, bTopx, bTopy) {
+    const xOffset = bTopx + j * sqrSize;
+    const yOffset = bTopy + i * sqrSize;
+    context.fillRect(xOffset, yOffset, sqrSize, sqrSize);
+  };
+
+  const drawMaze = function () {
+    const squareSize = 50;
+    const boardTopX = 50;
+    const boardTopY = 50;
+    for (let i = 0; i < maze.length; i++) {
+      for (let j = 0; j < maze[i].length; j++) {
+        const mazeElement = maze[i][j];
+        context.fillStyle =
+          mazeElement === 1
+            ? `white`
+            : (context.fillStyle = mazeElement === 3 ? `red` : `black`);
+        if (i === currentHeroX && j === currentHeroY) {
+          context.fillStyle = "green";
         }
+        drawRectangle(i, j, squareSize, boardTopX, boardTopY);
       }
-    },
+    }
   };
+  //public methods and variables
+  drawMaze();
 })();
-
-MazeModule.drawMaze();
